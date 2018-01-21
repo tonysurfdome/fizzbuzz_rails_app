@@ -1,3 +1,6 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  devise_for :users
+  get '/favorite/:number', to: 'numbers#favorite', as: :favorite
+  get '/:page', to: 'numbers#index'
+  root 'numbers#index'
 end
