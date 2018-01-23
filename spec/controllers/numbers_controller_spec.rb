@@ -1,4 +1,12 @@
 RSpec.describe NumbersController, type: :controller do
+  let!(:user) { create :user }
+  let!(:user_favorites) { create :user_favorite }
+
+  before do
+    allow(controller).to receive :authenticate_user!
+    allow(controller).to receive(:current_user) { user }
+  end
+
   describe "#index" do
     it "returns http success" do
       get :index
@@ -13,6 +21,14 @@ RSpec.describe NumbersController, type: :controller do
         expect(assigns(:values).count('Fizz')).to eq(3)
         expect(assigns(:values).count('Buzz')).to eq(2)
       end
+    end
+  end
+
+  describe '#add_favorite' do
+    it 'marks a number as favorite' do
+      get :add_favorite, params:  { number: 4 }
+      expect(user.user_favorites.count).to eq(1)
+      expect(response).to redirect_to root_path
     end
   end
 end
